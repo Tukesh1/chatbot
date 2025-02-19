@@ -1,47 +1,33 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 
-# Initialize Google GenAI client
-genai.configure(api_key="AIzaSyDvxDjxfU5a62V_fF2Vc7jjkgfj1ZDjgKI")
+# Initialize the client with your API key
+client = genai.Client(api_key="AIzaSyDvxDjxfU5a62V_fF2Vc7jjkgfj1ZDjgKI")
 
-# Function to get response from Gemini AI
 def get_response(prompt):
     try:
-        model = genai.GenerativeModel("gemini-2.0-flash")
-        response = model.generate_content(prompt)
+        # Generate content using the specified model
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt
+        )
+
+        # Return the generated text
         return response.text.strip()
     except Exception as e:
         return f"An error occurred: {e}"
 
-# Streamlit UI
-st.set_page_config(page_title="Fintech Chatbot", page_icon="💰")
+def main():
+    st.title("Google GenAI-powered Fintech Chatbot")
+    st.write("You can ask me about loans, interest rates, credit reports, and more.")
 
-st.title("💰 Fintech Chatbot powered by Gemini AI")
-st.write("Ask me about **loans, interest rates, credit reports,** and more!")
+    user_input = st.text_input("You:", "")
+    if st.button("Send"):
+        if user_input:
+            # Add context to the prompt to encourage concise responses
+            prompt = f"As a FinTech expert, please provide a concise explanation: {user_input}"
+            response = get_response(prompt)
+            st.text_area("Chatbot:", value=response, height=200)
 
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# Display chat history
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-# User input
-user_input = st.chat_input("Ask me anything about finance...")
-
-if user_input:
-    # Append user message
-    st.session_state.messages.append({"role": "user", "content": user_input})
-
-    # Generate AI response
-    prompt = f"As a FinTech expert, please provide a brief explanation in 3-4 sentences: {user_input}"
-    response = get_response(prompt)
-
-    # Append AI message
-    st.session_state.messages.append({"role": "assistant", "content": response})
-
-    # Display AI response
-    with st.chat_message("assistant"):
-        st.markdown(response)
+if __name__ == "__main__":
+    main()
