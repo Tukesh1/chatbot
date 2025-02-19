@@ -2,7 +2,7 @@ import streamlit as st
 from google import genai
 
 # Initialize the client with your API key
-client = genai.Client(api_key="AIzaSyDvxDjxfU5a62V_fF2Vc7jjkgfj1ZDjgKI")
+client = genai.Client(api_key)
 
 def get_response(prompt):
     try:
