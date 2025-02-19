@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 
 # Initialize Google GenAI client
-genai.configure(api_key="YOUR_API_KEY")
+genai.configure(api_key="AIzaSyDvxDjxfU5a62V_fF2Vc7jjkgfj1ZDjgKI")
 
 # Function to get response from Gemini AI
 def get_response(prompt):
