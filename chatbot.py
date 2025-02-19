@@ -1,8 +1,16 @@
 import streamlit as st
 from google import genai
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Retrieve API key from .env file
+api_key = os.getenv("API_KEY")
 
 # Initialize the client with your API key
-client = genai.Client(api_key)
+client = genai.Client(api_key=api_key)
 
 def get_response(prompt):
     try:
